@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
 #include "../Enums.h"
 #include "DataComponent.h"
 
@@ -20,7 +21,13 @@ other tables, and is used to detemine Stats
 USTRUCT(BlueprintType)
 struct FStat
 {
-	GENERATED_BODY()
+
+	GENERATED_USTRUCT_BODY()
+
+public:
+
+	FStat() {}
+	FStat(FString newName, int newValue = 0) : name(newName), value(newValue) {}
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FString name = "";
@@ -43,18 +50,16 @@ public:
 	static const FString GetStaticType() { return "UStatComponent"; }
 	virtual const FString GetType() override { return GetStaticType(); }
 
-protected:
+	void AddTable(UStatComponent& ActorTable);
+	void RemoveTable(UStatComponent& ActorTable);
+	TArray<FStat>& GetStatTable() { return table; }
 
-	//UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite)
-		//UStatTable* Stats;
+	int GetStat(FString statName);
+	void SetStat(FString statName, int amount);
+
+protected:
 
 	UPROPERTY(EditAnywhere, BlueprintType, Blueprintable)
 		TArray<FStat> table;
 
-public:
-	void AddTable(UStatComponent& ActorTable);
-	void RemoveTable(UStatComponent& ActorTable);
-	TArray<FStat>& GetStatTable() { return table; }
-	int GetStat(FString statName);
-	void SetStat(FString statName, int amount);
 };

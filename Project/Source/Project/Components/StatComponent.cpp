@@ -5,6 +5,7 @@
 
 UStatComponent::UStatComponent()
 {
+	/*
 	FStat cHP;
 	cHP.name = "currentHP";
 	table.Add(cHP);
@@ -64,19 +65,25 @@ UStatComponent::UStatComponent()
 	FStat luck;
 	luck.name = "Luck";
 	table.Add(luck);
-
-	/*
-	table.Add(FStat(TEXT("currentHP")));	 //current health points
-	table.Add(FStat(TEXT("maxHP")));		 //max health points
-	table.Add(FStat(TEXT("currentAP")));	 //current action points
-	table.Add(FStat(TEXT("maxAP")));		 //max action points
-	table.Add(FStat(TEXT("Strength")));	 //strength determines damage of physical attacks
-	table.Add(FStat(TEXT("Magic")));		 //magic determines damage of magical attacks
-	table.Add(FStat(TEXT("Defense")));		 //defense determines physical damage reduction
-	table.Add(FStat(TEXT("Resilience")));	 //resilience determines magical damage reduction
-	table.Add(FStat(TEXT("Agility")));		 //agility determines turn order, (maximum movement = can be its own variable if needed)
-	table.Add(FStat(TEXT("Luck")));		 //determines success chances, critical chances, etc
 	*/
+
+	table.Add(FStat(TEXT("currentHP")));	//current health points
+	table.Add(FStat(TEXT("maxHP")));		//max health points
+	table.Add(FStat(TEXT("currentSP")));	//
+	table.Add(FStat(TEXT("maxSP")));		//
+	table.Add(FStat(TEXT("currentAP")));	//current action points
+	table.Add(FStat(TEXT("maxAP")));		//max action points
+	table.Add(FStat(TEXT("currentGauge")));	//current special gauge
+	table.Add(FStat(TEXT("maxGauge")));		//max special gauge
+
+	table.Add(FStat(TEXT("Strength")));		//strength determines damage of physical attacks
+	table.Add(FStat(TEXT("Magic")));		//magic determines damage of magical attacks
+	table.Add(FStat(TEXT("Defense")));		//defense determines physical damage reduction
+	table.Add(FStat(TEXT("Resilience")));	//resilience determines magical damage reduction
+	table.Add(FStat(TEXT("Agility")));		//agility determines turn order, (maximum movement = can be its own variable if needed)
+	table.Add(FStat(TEXT("Luck")));			//determines success chances, critical chances, etc
+	
+
 }
 
 void UStatComponent::AddTable(UStatComponent& ActorTable)

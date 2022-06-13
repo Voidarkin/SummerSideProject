@@ -7,7 +7,7 @@
 #include "DrawDebugHelpers.h"
 #include "ProjectCharacter.h"
 #include "Kismet/GameplayStatics.h"
-#include "PartyManager.h"
+#include "Partymanager/PartyManager.h"
 
 // Sets default values
 AMapTransitionTrigger::AMapTransitionTrigger()

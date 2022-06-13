@@ -4,19 +4,37 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "MapTransitionTrigger.h"
-#include "ProjectCharacter.h"
-#include "UI/LoadingScreen.h"
-#include "PlayerController/MyPlayerController.h"
+#include "../MapTransitionTrigger.h"
+#include "../ProjectCharacter.h"
+#include "../UI/LoadingScreen.h"
+#include "../PlayerController/MyPlayerController.h"
 #include "EngineUtils.h"
 #include "GameFramework/Actor.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
+#include "Inventory.h"
+#include "../Data/CharacterData.h"
+#include "../Data/DatabaseManager.h"
+#include "../Data/CharacterDatabase.h"
 
 
 UPartyManager::UPartyManager()
 {
-	
+	Inventory = Cast<UInventory>(UInventory::StaticClass()->GetDefaultObject());
+
+	//Starting Party Members
+	UDatabaseManager* DatabaseManager = GetGameInstance()->GetSubsystem<UDatabaseManager>();
+		
+	FString characterName = "";
+	UCharacterData* character = DatabaseManager->GetCharacterDatabase()->GetCharacter(characterName);
+	if (character)
+	{
+		AddPartyMember(DatabaseManager->GetCharacterDatabase()->GetCharacter(characterName));
+	}
+
+	//Starting Recipes
+	KnownRecipes.Add("Potion");
+
 }
 
 void UPartyManager::MapTransition(FString currentMap, FString nextMap)
@@ -89,4 +107,28 @@ void UPartyManager::TeleportPlayerAfterTransition()
 
 	//take down the load screen after teleported to new map and location
 	PlayerController->DisableLoadingScreen();
+}
+
+UCharacterData* UPartyManager::GetPartyMember(FString name)
+{
+	for (UCharacterData* character : PartyMembers)
+	{
+		if (character->GetCharacterName() == name)
+		{
+			return character;
+		}
+	}
+	return nullptr;
+}
+
+void UPartyManager::AddPartyMember(UCharacterData* character)
+{
+	CurrentPartyMembers.Add(character);
+	CurrentPartySize++;
+}
+
+void UPartyManager::RemovePartyMember(UCharacterData* character)
+{
+	CurrentPartyMembers.RemoveSingle(character);
+	CurrentPartySize--;
 }
