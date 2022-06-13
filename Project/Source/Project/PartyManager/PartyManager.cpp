@@ -16,21 +16,16 @@
 #include "../Data/CharacterData.h"
 #include "../Data/DatabaseManager.h"
 #include "../Data/CharacterDatabase.h"
+#include "../GameMode/ProjectGameModeBase.h"
 
 
 UPartyManager::UPartyManager()
 {
+
 	Inventory = Cast<UInventory>(UInventory::StaticClass()->GetDefaultObject());
 
 	//Starting Party Members
-	UDatabaseManager* DatabaseManager = GetGameInstance()->GetSubsystem<UDatabaseManager>();
-		
-	FString characterName = "";
-	UCharacterData* character = DatabaseManager->GetCharacterDatabase()->GetCharacter(characterName);
-	if (character)
-	{
-		AddPartyMember(DatabaseManager->GetCharacterDatabase()->GetCharacter(characterName));
-	}
+	//AddPartyMember("");
 
 	//Starting Recipes
 	KnownRecipes.Add("Potion");
@@ -44,11 +39,11 @@ void UPartyManager::MapTransition(FString currentMap, FString nextMap)
 	UGameplayStatics::OpenLevel(GetWorld(), FName(nextMap));
 	currentMapName = nextMap;
 	previousMapName = currentMap;
+	EnableLoadingScreen();
 
 	//TODO: Make sure it remains active after transitions
-
+	/*
 	//Setup a load screen here
-	EnableLoadingScreen();
 
 	//Setup timer and then apply to next map
 	GetWorld()->GetTimerManager().ClearTimer(LoadingScreenTimer);
@@ -56,6 +51,7 @@ void UPartyManager::MapTransition(FString currentMap, FString nextMap)
 
 	GetWorld()->GetTimerManager().ClearTimer(MapTransitionTimer);
 	GetWorld()->GetTimerManager().SetTimer(MapTransitionTimer, this, &UPartyManager::TeleportPlayerAfterTransition, 1.0f);
+	*/
 
 }
 
@@ -64,49 +60,25 @@ void UPartyManager::EnableLoadingScreen()
 	Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->EnableLoadingScreen();
 }
 
-void UPartyManager::TeleportPlayerAfterTransition()
+void UPartyManager::AddInventoryItem(FString name, int amount) { Inventory->AddItem(name, amount); }
+void UPartyManager::RemoveInventoryItem(FString name, int amount) { Inventory->RemoveItem(name, amount); }
+
+TArray<bool> UPartyManager::GetChestListForCurrent()
 {
-	//Setting up teleporting to new location
-	TArray<AActor*> FoundActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AMapTransitionTrigger::StaticClass(), FoundActors);
-	AMapTransitionTrigger* locationBefore = nullptr;
-	AActor* destinationLocation = nullptr;
-	for (AActor* actor : FoundActors)
-	{
-		AMapTransitionTrigger* trigger = Cast<AMapTransitionTrigger>(actor);
-		if (trigger)
-		{
-			if (trigger->destinationMap == previousMapName)
-			{
-				destinationLocation = trigger->exitLocation;
-				locationBefore = trigger;
-			}
-		}
-	}
+	FString current = Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
+	return GetChestListFor(current);
+}
 
-	//Guard clauses
-	if (!destinationLocation) { return; }
-	if (!locationBefore) { return; }
+void UPartyManager::AddChestToList(int chestNum)
+{
+	FString current = Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
+	OpenedChests[current][chestNum] = true;
+}
 
-	AMyPlayerController* PlayerController = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	if (!PlayerController) { return; }
-
-	AProjectCharacter* PlayerCharacter = Cast<AProjectCharacter>(PlayerController->GetPawn());
-	if (!PlayerCharacter) { return; }
-	//End guard clauses
-	
-	//Location
-	PlayerCharacter->SetActorLocation(destinationLocation->GetActorLocation());
-	
-	//Rotation
-	FRotator newRotation = UKismetMathLibrary::FindLookAtRotation(locationBefore->GetActorLocation(), destinationLocation->GetActorLocation());
-	newRotation.Pitch = 0;
-	newRotation.Roll = 0;
-	PlayerController->SetControlRotation(newRotation); //Set camera Direction
-	PlayerCharacter->GetCapsuleComponent()->SetWorldRotation(newRotation); //Set Visible direction
-
-	//take down the load screen after teleported to new map and location
-	PlayerController->DisableLoadingScreen();
+bool UPartyManager::IsChestInList(int chestNum)
+{
+	FString current = Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
+	return OpenedChests[current][chestNum];
 }
 
 UCharacterData* UPartyManager::GetPartyMember(FString name)
@@ -121,10 +93,28 @@ UCharacterData* UPartyManager::GetPartyMember(FString name)
 	return nullptr;
 }
 
+void UPartyManager::AddPartyMember(FString characterName)
+{
+	UCharacterData* character = GetGameInstance()->GetSubsystem<UDatabaseManager>()->GetCharacterDatabase()->GetCharacter(characterName);
+	if (character)
+	{
+		AddPartyMember(character);
+	}
+}
+
 void UPartyManager::AddPartyMember(UCharacterData* character)
 {
 	CurrentPartyMembers.Add(character);
 	CurrentPartySize++;
+}
+
+void UPartyManager::RemovePartyMember(FString characterName)
+{
+	UCharacterData* character = GetGameInstance()->GetSubsystem<UDatabaseManager>()->GetCharacterDatabase()->GetCharacter(characterName);
+	if (character)
+	{
+		RemovePartyMember(character);
+	}
 }
 
 void UPartyManager::RemovePartyMember(UCharacterData* character)

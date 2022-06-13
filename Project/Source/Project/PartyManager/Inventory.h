@@ -39,7 +39,7 @@ public:
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<FInventorySlot> inventory;
+		TArray<FInventorySlot> Inventory;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0", ClampMax = "9999"))
 		int money;
@@ -51,7 +51,7 @@ public:
 	void IncreaseMoney(int amount);
 	void DecreaseMoney(int amount);
 	int GetMoney() { return money; }
-	TArray<FInventorySlot> GetInventory() { return inventory; }
+	TArray<FInventorySlot> GetInventory() { return Inventory; }
 
 	bool CheckIfHasItem(FString itemName);
 	bool CheckIfHasItem(FString itemName, int itemAmount);

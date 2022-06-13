@@ -12,6 +12,10 @@ Author:      Joshua Griffis
 Date:        2022/06/12
 Description: Used to store the data on Items to be used in the game
 *****************************************************************************************/
+/***************************************************************************************
+Date:        2022/06/13
+Change Log:  Added an ID number to be set in accordance with desired item list
+*****************************************************************************************/
 
 class UDataComponent;
 
@@ -22,6 +26,8 @@ class PROJECT_API UItemData : public UDataAsset
 	
 public:
 
+	UFUNCTION()
+		const int GetID() { return ID; }
 	UFUNCTION()
 		const FString GetItemName() { return Name; }
 	UFUNCTION()
@@ -47,6 +53,8 @@ public:
 
 protected:
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FString Name;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

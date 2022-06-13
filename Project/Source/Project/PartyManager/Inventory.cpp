@@ -20,16 +20,16 @@ UInventory::UInventory()
 void UInventory::AddItem(FString name, int amount)
 {
 	bool bAdded = false;
-	if (inventory.Max() != 0)
+	if (Inventory.Max() != 0)
 	{
-		for (int i = 0; i < inventory.Num(); i++) 
+		for (int i = 0; i < Inventory.Num(); i++) 
 		{
-			if (inventory[i].name == name)
+			if (Inventory[i].name == name)
 			{
-				inventory[i].amount += amount;
-				if (inventory[i].amount > 99)
+				Inventory[i].amount += amount;
+				if (Inventory[i].amount > 99)
 				{
-					inventory[i].amount = 99;
+					Inventory[i].amount = 99;
 				}
 				bAdded = true;
 			}
@@ -40,7 +40,7 @@ void UInventory::AddItem(FString name, int amount)
 			FInventorySlot slot;
 			slot.name = name;
 			slot.amount = amount;
-			inventory.Add(slot);
+			Inventory.Add(slot);
 		}
 	}
 	else
@@ -48,7 +48,7 @@ void UInventory::AddItem(FString name, int amount)
 		FInventorySlot slot;
 		slot.name = name;
 		slot.amount = amount;
-		inventory.Add(slot);
+		Inventory.Add(slot);
 	}
 	
 	FString debugMessage;
@@ -66,16 +66,16 @@ void UInventory::AddItem(FString name, int amount)
 
 void UInventory::RemoveItem(FString name, int amount)
 {
-	if (inventory.Num() != 0)
+	if (Inventory.Num() != 0)
 	{
-		for (int i = 0; i < inventory.Num(); i++)
+		for (int i = 0; i < Inventory.Num(); i++)
 		{
-			if (inventory[i].name == name)
+			if (Inventory[i].name == name)
 			{
-				inventory[i].amount -= amount;
-				if (inventory[i].amount < 1)
+				Inventory[i].amount -= amount;
+				if (Inventory[i].amount < 1)
 				{
-					inventory.RemoveAt(i);
+					Inventory.RemoveAt(i);
 				}
 			}
 		}
@@ -102,11 +102,11 @@ void UInventory::DecreaseMoney(int amount)
 
 bool UInventory::CheckIfHasItem(FString itemName)
 {
-	if (inventory.Num() != 0)
+	if (Inventory.Num() != 0)
 	{
-		for (int i = 0; i < inventory.Num(); i++)
+		for (int i = 0; i < Inventory.Num(); i++)
 		{
-			if (inventory[i].name == itemName)
+			if (Inventory[i].name == itemName)
 			{
 				return true;
 			}
@@ -117,13 +117,13 @@ bool UInventory::CheckIfHasItem(FString itemName)
 
 bool UInventory::CheckIfHasItem(FString itemName, int itemAmount)
 {
-	if (inventory.Num() != 0)
+	if (Inventory.Num() != 0)
 	{
-		for (int i = 0; i < inventory.Num(); i++)
+		for (int i = 0; i < Inventory.Num(); i++)
 		{
-			if (inventory[i].name == itemName)
+			if (Inventory[i].name == itemName)
 			{
-				if (inventory[i].amount >= itemAmount)
+				if (Inventory[i].amount >= itemAmount)
 				{
 					return true;
 				}

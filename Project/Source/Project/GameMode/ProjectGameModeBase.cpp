@@ -31,7 +31,10 @@ AProjectGameModeBase::AProjectGameModeBase()
 	//}
 }
 
-void AProjectGameModeBase::BeginPlay()
+FString AProjectGameModeBase::GetCurrentMap()
 {
-	Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->EnableLoadingScreen();
+	FString current = GetWorld()->GetMapName();
+	current.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+	return current;
 }
+

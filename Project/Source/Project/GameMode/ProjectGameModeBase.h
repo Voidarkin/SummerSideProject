@@ -18,8 +18,6 @@ public:
 
 	AProjectGameModeBase();
 
-protected:
+	FString GetCurrentMap();
 
-	virtual void BeginPlay() override;
-	
 };
