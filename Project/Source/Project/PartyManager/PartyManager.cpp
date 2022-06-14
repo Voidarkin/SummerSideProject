@@ -11,6 +11,7 @@
 #include "EngineUtils.h"
 #include "GameFramework/Actor.h"
 #include "TimerManager.h"
+#include "../GameManager.h"
 #include "Engine/World.h"
 #include "Inventory.h"
 #include "../Data/CharacterData.h"
@@ -65,19 +66,19 @@ void UPartyManager::RemoveInventoryItem(FString name, int amount) { Inventory->R
 
 TArray<bool> UPartyManager::GetChestListForCurrent()
 {
-	FString current = Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
+	FString current = GetWorld()->GetGameInstance<UGameManager>()->GetCurrentMap();
 	return GetChestListFor(current);
 }
 
 void UPartyManager::AddChestToList(int chestNum)
 {
-	FString current = Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
+	FString current = GetWorld()->GetGameInstance<UGameManager>()->GetCurrentMap();
 	OpenedChests[current][chestNum] = true;
 }
 
 bool UPartyManager::IsChestInList(int chestNum)
 {
-	FString current = Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
+	FString current = GetWorld()->GetGameInstance<UGameManager>()->GetCurrentMap();
 	return OpenedChests[current][chestNum];
 }
 

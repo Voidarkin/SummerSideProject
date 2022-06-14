@@ -6,8 +6,8 @@
 #include "Engine/DataAsset.h"
 #include "../Enums.h"
 #include "DataComponent.h"
-//#include "../Inventory.h"
-//#include "../Item.h"
+#include "../PartyManager/Inventory.h"
+#include "../Data/ItemData.h"
 
 #include "CraftableComponent.generated.h"
 

@@ -34,6 +34,13 @@ void UGameManager::EndLoadingScreen(UWorld* InLoadedWorld)
 	TeleportPlayerAfterTransition();
 }
 
+FString UGameManager::GetCurrentMap()
+{
+	FString current = GetWorld()->GetMapName();
+	current.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+	return current;
+}
+
 void UGameManager::TeleportPlayerAfterTransition()
 {
 	//Setting up teleporting to new location

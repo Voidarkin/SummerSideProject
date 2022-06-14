@@ -4,6 +4,13 @@
 #include "Engine/GameInstance.h"
 #include "GameManager.generated.h"
 
+/***************************************************************************************
+Title:       GameManager
+Author:      Joshua Griffis
+Date:        2022/06/14
+Description: 
+*****************************************************************************************/
+
 UCLASS()
 class PROJECT_API UGameManager : public UGameInstance
 {
@@ -21,6 +28,8 @@ public:
 		virtual void BeginLoadingScreen(const FString& MapName);
 	UFUNCTION()
 		virtual void EndLoadingScreen(UWorld* InLoadedWorld);
+
+	FString GetCurrentMap();
 
 protected:
 

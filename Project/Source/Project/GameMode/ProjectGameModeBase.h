@@ -1,14 +1,16 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "ProjectGameModeBase.generated.h"
 
-/**
- * 
- */
+/***************************************************************************************
+Title:       ProjectGameModeBase
+Author:      Joshua Griffis
+Date:        2022/06/14
+Description: 
+*****************************************************************************************/
+
 UCLASS()
 class PROJECT_API AProjectGameModeBase : public AGameModeBase
 {
@@ -17,7 +19,5 @@ class PROJECT_API AProjectGameModeBase : public AGameModeBase
 public:
 
 	AProjectGameModeBase();
-
-	FString GetCurrentMap();
 
 };

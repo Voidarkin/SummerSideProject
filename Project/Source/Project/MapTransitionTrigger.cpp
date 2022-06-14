@@ -43,7 +43,7 @@ void AMapTransitionTrigger::OnOverlap(UPrimitiveComponent* OverlappedComponent, 
 	//End of guard clauses
 
 	//Get current map name, removing the prefix
-	FString current = Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
+	FString current = GetGameInstance<UGameManager>()->GetCurrentMap();//Cast<AProjectGameModeBase>(UGameplayStatics::GetGameMode(this))->GetCurrentMap();
 	//Then send the data to the game instance
 
 	//GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Green, current);

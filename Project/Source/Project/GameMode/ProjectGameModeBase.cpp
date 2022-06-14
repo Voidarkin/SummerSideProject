@@ -31,10 +31,3 @@ AProjectGameModeBase::AProjectGameModeBase()
 	//}
 }
 
-FString AProjectGameModeBase::GetCurrentMap()
-{
-	FString current = GetWorld()->GetMapName();
-	current.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
-	return current;
-}
-
