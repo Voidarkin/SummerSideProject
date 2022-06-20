@@ -7,6 +7,7 @@
 //#include "UI/DialogueWidget.h"
 //#include "UI/MenuWidget.h"
 #include "../UI/LoadingScreen.h"
+#include "../DialogueManager/DialogueManager.h"
 //#include "Interactables/PDInteractable.h"
 
 
@@ -62,7 +63,7 @@ void AMyPlayerController::SetupInputComponent()
 		//InputComponent->BindAction("Speed", IE_Pressed, this, &APDPlayerController::SlowDown);
 		//InputComponent->BindAction("Speed", IE_Released, this, &APDPlayerController::SpeedUp);
 
-		//InputComponent->BindAction("Interact", IE_Pressed, this, &APDPlayerController::Interact);
+		InputComponent->BindAction("Interact", IE_Pressed, this, &AMyPlayerController::Interact);
 		//InputComponent->BindAction("Menu", IE_Pressed, this, &APDPlayerController::ToggleMenu);
 
 		InputComponent->BindAxis("Turn", MyPawn, &AProjectCharacter::AddControllerYawInput);
@@ -139,6 +140,15 @@ void AMyPlayerController::LookUpAtRate(float Rate)
 {
 	if (MyPawn)
 		MyPawn->LookUpAtRate(Rate);
+}
+
+void AMyPlayerController::Interact()
+{
+	UDialogueManager* DialogueManager = GetGameInstance()->GetSubsystem<UDialogueManager>();
+	if (DialogueManager)
+	{
+		DialogueManager->DisplayDialogue();
+	}
 }
 
 void AMyPlayerController::EnableLoadingScreen()

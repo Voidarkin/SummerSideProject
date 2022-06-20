@@ -44,7 +44,7 @@ protected:
 	void SpeedUp();
 	void SlowDown();
 
-	//void Interact();
+	void Interact();
 
 
 	//void AddControllerYawInput(float Val);

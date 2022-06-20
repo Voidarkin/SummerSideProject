@@ -4,10 +4,12 @@
 #include "UObject/NoExportTypes.h"
 #include "DataComponent.generated.h"
 
-/**
- * 
- */
-
+/***************************************************************************************
+Title:       DataComponent
+Author:      Joshua Griffis
+Date:        2022/06/20
+Description: Basic DataComponent class
+*****************************************************************************************/
 
 UCLASS()
 class PROJECT_API UDataComponent : public UObject
