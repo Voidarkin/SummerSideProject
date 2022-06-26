@@ -1,14 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
-/**
- * 
- */
+
 
 class ULoadingScreen;
 
@@ -52,7 +48,7 @@ protected:
 	//void AddControllerPitchInput(float Val);
 	void LookUpAtRate(float Rate);
 
-	//class APlayerState* MyPlayerState;
+	class APlayerState* MyPlayerState;
 	class AProjectCharacter* MyPawn;
 
 public:

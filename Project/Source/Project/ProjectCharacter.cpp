@@ -1,13 +1,15 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "ProjectCharacter.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Interactables/Interactable.h"
+#include "DialogueManager/DialogueManager.h"
+#include "States/ProjectPlayerState.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AProjectCharacter
@@ -43,8 +45,13 @@ AProjectCharacter::AProjectCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+	InteractSphere = CreateDefaultSubobject<USphereComponent>("Interact Sphere");
+	InteractSphere->SetSphereRadius(200);
+	InteractSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	InteractSphere->SetSimulatePhysics(false);
+	InteractSphere->SetCollisionProfileName("OverlapAll");
+	InteractSphere->SetupAttachment(RootComponent);
+
 }
 
 
@@ -67,6 +74,55 @@ void AProjectCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Loca
 void AProjectCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Location)
 {
 		StopJumping();
+}
+
+void AProjectCharacter::Interact_Default()
+{
+	//Sphere Collision method getting closest interactable
+	//Gather actors within interact range
+	TArray<AActor*> FoundActors;
+	InteractSphere->GetOverlappingActors(FoundActors, AActor::StaticClass());
+
+	if (FoundActors.Num() == 0) { return; }
+
+	//check if any implement Interact functions
+	TArray<AActor*> interactables;
+	for (auto actor : FoundActors)
+	{
+		if (actor->Implements<UInteractable>())
+		{
+			interactables.Add(actor);
+		}
+	}
+
+	//find closest interactable from new list and execute
+
+
+	IInteractable::Execute_Interact(interactables[0]);
+	Cast<AProjectPlayerState>(GetPlayerState())->ChangeState(EState::Dialogue);
+}
+
+void AProjectCharacter::Interact_Dialogue()
+{
+	UDialogueManager* DialogueManager = GetGameInstance()->GetSubsystem<UDialogueManager>();
+	DialogueManager->ContinueConversation();
+}
+
+void AProjectCharacter::Interact()
+{
+	switch (Cast<AProjectPlayerState>(GetPlayerState())->GetCurrentState())
+	{
+	case EState::Default:
+		Interact_Default();
+		break;
+	case EState::Dialogue:
+		Interact_Dialogue();
+		break;
+	case EState::Menu:
+		//Interact_Menu();
+		break;
+	}
+
 }
 
 void AProjectCharacter::TurnAtRate(float Rate)

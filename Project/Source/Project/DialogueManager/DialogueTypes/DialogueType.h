@@ -19,9 +19,16 @@ class PROJECT_API UDialogueType : public UObject
 	GENERATED_BODY()
 	
 public:
+	
+	UFUNCTION()
+		void SetDialogueText(FString text) { DialogueText = text; }
 
 	virtual const FString GetType() { return ""; }
 
 	virtual void Display(UDialogueScreen* DialogueUI) {}
+
+protected:
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
+		FString DialogueText;
 
 };

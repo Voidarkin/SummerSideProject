@@ -1,9 +1,13 @@
 #include "DialogueManager.h"
+#include "Conversation.h"
 #include "../UI/DialogueScreen.h"
 #include "DialogueTypes/DialogueType.h"
 #include "DialogueTypes/Choice.h"
 #include "DialogueTypes/Dialogue.h"
 #include "DialogueTypes/Descriptor.h"
+#include "../States/ProjectPlayerState.h"
+#include "Kismet/GameplayStatics.h"
+#include "../PlayerController/MyPlayerController.h"
 
 UDialogueManager::UDialogueManager()
 {
@@ -36,39 +40,67 @@ void UDialogueManager::HideDialogue()
 	DialogueUI->RemoveFromViewport();
 }
 
-void UDialogueManager::StoreConversation(FConversation conversation)
+void UDialogueManager::StoreConversation(UDialogueType* message)
+{
+	EmptyStoredConversations();
+	message->Display(DialogueUI);
+	DisplayDialogue();
+}
+
+void UDialogueManager::StoreConversation(UConversation* conversation)
 {
 	EmptyStoredConversations();	
 	StoredConversations[0] = conversation;
+
+	UpdateDialogue();
 }
 
-void UDialogueManager::StoreConversation(TArray<FConversation> conversation)
+void UDialogueManager::StoreConversation(TArray<UConversation*> conversation, char startingConversation)
 {
 	EmptyStoredConversations();
 	for (int i = 0; i < conversation.Num(); i++)
 	{
 		StoredConversations[i] = conversation[i];
 	}
+	CurrentConversation = startingConversation;
+	UpdateDialogue();
+}
+
+void UDialogueManager::UpdateDialogue()
+{
+	StoredConversations[CurrentConversation]->DisplayConversationLine(CurrentConversationProgress, DialogueUI);
+	DisplayDialogue();
 }
 
 void UDialogueManager::ContinueConversation()
 {
-
-	if (CurrentConversationProgress++ != StoredConversations[CurrentConversation].Num())
+	CurrentConversationProgress++;
+	if (StoredConversations.Num() == 0)
 	{
-		//continue dialogue
-		StoredConversations[CurrentConversation][CurrentConversationProgress]->Display(DialogueUI);
+		EndConversation();
+		return;
+	}
+	if (!(CurrentConversationProgress <= StoredConversations[CurrentConversation]->Num()))
+	{
+		//check if current conversation was a choice and if it continues
+		
+		//end dialogue
+		EndConversation();
 
 	}
 	else
 	{
-		//check if current conversation was a choice and if it continues
-		
+		//continue dialogue
+		UpdateDialogue();
 
-
-		//end dialogue
-		HideDialogue();
 	}
+}
+
+void UDialogueManager::EndConversation()
+{
+	HideDialogue();
+	AMyPlayerController* PlayerController = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PlayerController->GetPlayerState<AProjectPlayerState>()->ChangeState(EState::Default);
 }
 
 void UDialogueManager::EmptyStoredConversations()

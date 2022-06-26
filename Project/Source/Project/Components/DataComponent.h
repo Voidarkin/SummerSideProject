@@ -11,7 +11,7 @@ Date:        2022/06/20
 Description: Basic DataComponent class
 *****************************************************************************************/
 
-UCLASS()
+UCLASS(ABSTRACT, EditInlineNew, BlueprintType, Blueprintable)
 class PROJECT_API UDataComponent : public UObject
 {
 	GENERATED_BODY()

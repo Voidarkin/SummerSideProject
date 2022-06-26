@@ -18,11 +18,6 @@ class PROJECT_API UDescriptor : public UDialogueType
 	
 public:
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
-		FString DialogueText;
-
-public:
-
 	static const FString GetStaticType() { return "UDescriptor"; }
 	virtual const FString GetType() override { return GetStaticType(); }
 

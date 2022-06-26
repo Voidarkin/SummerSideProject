@@ -3,17 +3,17 @@
 #include "GameFramework/Pawn.h"
 #include "../PlayerController/MyPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-//#include "PDPlayerState.h"
+#include "../States/ProjectPlayerState.h"
 
 
 AOverworldGameMode::AOverworldGameMode()
 {
 
-	static ConstructorHelpers::FClassFinder<APawn> PawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/OverworldCharacter"));
+	static ConstructorHelpers::FClassFinder<APawn> PawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/Characters/OverworldCharacter"));
 
-	static ConstructorHelpers::FClassFinder<AMyPlayerController> PlayerController(TEXT("/Game/ThirdPersonCPP/Blueprints/BP_MyPlayerController"));
+	static ConstructorHelpers::FClassFinder<AMyPlayerController> PlayerController(TEXT("/Game/ThirdPersonCPP/Blueprints/Controllers/BP_MyPlayerController"));
 
-	//static ConstructorHelpers::FClassFinder<APlayerState> PlayerState(TEXT("/Game/ThirdPersonCPP/Blueprints/BP_PDPlayerState"));
+	static ConstructorHelpers::FClassFinder<APlayerState> PlayerState(TEXT("/Game/ThirdPersonCPP/Blueprints/States/BP_PlayerState"));
 
 	if (PawnBPClass.Class != NULL)
 	{
@@ -23,8 +23,8 @@ AOverworldGameMode::AOverworldGameMode()
 	{
 		PlayerControllerClass = PlayerController.Class;
 	}
-	//if (PlayerState.Class != NULL)
-	//{
-	//	PlayerStateClass = PlayerState.Class;
-	//}
+	if (PlayerState.Class != NULL)
+	{
+		PlayerStateClass = PlayerState.Class;
+	}
 }

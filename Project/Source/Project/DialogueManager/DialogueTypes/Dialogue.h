@@ -20,8 +20,6 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 		FString DialogueName;
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
-		FString DialogueText;
 
 public:
 	static const FString GetStaticType() { return "UDialogue"; }

@@ -1,21 +1,18 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "ProjectGameModeBase.h"
 #include "UObject/ConstructorHelpers.h"
 #include "GameFramework/Pawn.h"
 #include "../PlayerController/MyPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-//#include "PDPlayerState.h"
+#include "../States/ProjectPlayerState.h"
 
 
 AProjectGameModeBase::AProjectGameModeBase()
 {
-	static ConstructorHelpers::FClassFinder<APawn> PawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/ThirdPersonCharacter"));
+	static ConstructorHelpers::FClassFinder<APawn> PawnBPClass(TEXT("/Game/ThirdPersonCPP/Blueprints/Characters/ThirdPersonCharacter"));
 
-	static ConstructorHelpers::FClassFinder<AMyPlayerController> PlayerController(TEXT("/Game/ThirdPersonCPP/Blueprints/BP_MyPlayerController"));
+	static ConstructorHelpers::FClassFinder<AMyPlayerController> PlayerController(TEXT("/Game/ThirdPersonCPP/Blueprints/Controllers/BP_MyPlayerController"));
 
-	//static ConstructorHelpers::FClassFinder<APlayerState> PlayerState(TEXT("/Game/ThirdPersonCPP/Blueprints/BP_PDPlayerState"));
+	static ConstructorHelpers::FClassFinder<APlayerState> PlayerState(TEXT("/Game/ThirdPersonCPP/Blueprints/States/BP_PlayerState"));
 
 	if (PawnBPClass.Class != NULL)
 	{
@@ -25,9 +22,9 @@ AProjectGameModeBase::AProjectGameModeBase()
 	{
 		PlayerControllerClass = PlayerController.Class;
 	}
-	//if (PlayerState.Class != NULL)
-	//{
-	//	PlayerStateClass = PlayerState.Class;
-	//}
+	if (PlayerState.Class != NULL)
+	{
+		PlayerStateClass = PlayerState.Class;
+	}
 }
 

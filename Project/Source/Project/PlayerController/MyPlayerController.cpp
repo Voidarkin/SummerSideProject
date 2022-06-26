@@ -3,7 +3,7 @@
 
 #include "MyPlayerController.h"
 #include "../ProjectCharacter.h"
-//#include "PDPlayerState.h"
+#include "../States/ProjectPlayerState.h"
 //#include "UI/DialogueWidget.h"
 //#include "UI/MenuWidget.h"
 #include "../UI/LoadingScreen.h"
@@ -80,13 +80,12 @@ void AMyPlayerController::AcknowledgePossession(APawn* PossesedPawn)
 	Super::AcknowledgePossession(PossesedPawn);
 	MyPawn = Cast<AProjectCharacter>(PossesedPawn);
 
-	/*
-	MyPlayerState = Cast<APDPlayerState>(PlayerState);
+	MyPlayerState = Cast<AProjectPlayerState>(PlayerState);
 	if (MyPlayerState)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found class %s"), TEXT("AMyPlayerController::BeginPlay: MyPlayerState Set"));
 	}
-*/
+
 	if (InputComponent != nullptr)
 	{
 		InputComponent->BindAxis("Turn", MyPawn, &AProjectCharacter::AddControllerYawInput);
@@ -144,11 +143,16 @@ void AMyPlayerController::LookUpAtRate(float Rate)
 
 void AMyPlayerController::Interact()
 {
+	/*
 	UDialogueManager* DialogueManager = GetGameInstance()->GetSubsystem<UDialogueManager>();
 	if (DialogueManager)
 	{
 		DialogueManager->DisplayDialogue();
 	}
+	*/
+
+	if (MyPawn)
+		MyPawn->Interact();
 }
 
 void AMyPlayerController::EnableLoadingScreen()

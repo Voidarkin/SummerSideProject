@@ -13,29 +13,7 @@ Description: Controls all dialogue systems in the game
 
 class UDialogueScreen;
 class UDialogueType;
-
-USTRUCT(BlueprintType)
-struct FConversation {
-	GENERATED_BODY()
-public:
-
-	TArray<UDialogueType*> Ar;
-
-	UDialogueType* operator[] (int32 i) 
-	{
-		return Ar[i];
-	}
-
-	void Add(UDialogueType* DialogueType) 
-	{
-		Ar.Add(DialogueType);
-	}
-
-	int32 Num()
-	{
-		return Ar.Num();
-	}
-};
+class UConversation;
 
 UCLASS()
 class PROJECT_API UDialogueManager : public UGameInstanceSubsystem
@@ -50,9 +28,12 @@ public:
 
 	void DisplayDialogue();
 	void HideDialogue();
-	void StoreConversation(FConversation conversation);
-	void StoreConversation(TArray<FConversation> conversation);
+	void StoreConversation(UDialogueType* message);
+	void StoreConversation(UConversation* conversation);
+	void StoreConversation(TArray<UConversation*> conversation, char startingConversation = 0);
+	void UpdateDialogue();
 	void ContinueConversation();
+	void EndConversation();
 
 protected:
 
@@ -64,7 +45,7 @@ protected:
 
 	//Current dialogue variables
 	UPROPERTY()
-		TArray<FConversation> StoredConversations;
+		TArray<UConversation*> StoredConversations;
 
 	int CurrentConversation = 0;
 	int CurrentConversationProgress = 0;

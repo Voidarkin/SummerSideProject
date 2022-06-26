@@ -37,6 +37,8 @@ public:
 	void SetDialogueStyle();
 	void SetChoiceStyle();
 
+	UVerticalBox* GetChoiceList();
+
 protected:
 
 	//Borders

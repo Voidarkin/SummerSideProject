@@ -35,9 +35,10 @@ void UDialogueScreen::SetDialogueStyle()
 
 void UDialogueScreen::SetChoiceStyle()
 {
-	SetDefaultStyle();
 	Border_Choice->SetVisibility(ESlateVisibility::Visible);
 }
+
+UVerticalBox* UDialogueScreen::GetChoiceList() { return VerticalBox_Choices; }
 
 void UDialogueScreen::SetDefaultStyle()
 {

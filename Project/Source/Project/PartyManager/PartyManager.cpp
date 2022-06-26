@@ -18,6 +18,7 @@
 #include "../Data/DatabaseManager.h"
 #include "../Data/CharacterDatabase.h"
 #include "../GameMode/ProjectGameModeBase.h"
+#include "../Interactables/Chest.h"
 
 
 UPartyManager::UPartyManager()
@@ -79,6 +80,17 @@ void UPartyManager::AddChestToList(int chestNum)
 bool UPartyManager::IsChestInList(int chestNum)
 {
 	FString current = GetWorld()->GetGameInstance<UGameManager>()->GetCurrentMap();
+	//If the chest list for the map hasnt been created yet, create it here and populate it with default values
+	if (!OpenedChests.Contains(current))
+	{
+		OpenedChests.Add(current);
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChest::StaticClass(), FoundActors);
+		for (int i = 0; i < FoundActors.Num(); i++)
+		{
+			OpenedChests[current].Add(false);
+		}
+	}
 	return OpenedChests[current][chestNum];
 }
 

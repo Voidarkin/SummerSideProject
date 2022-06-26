@@ -70,8 +70,6 @@ protected:
 	
 	//Item Variables
 	UInventory* Inventory;
-	TArray<FString> KnownRecipes;
-	TMap<FString, TArray<bool>> OpenedChests; //name of location and then id number based on chests in that location
 
 	//Character Variables
 	UPROPERTY()
@@ -82,8 +80,11 @@ protected:
 		int CurrentPartySize;
 
 	//Codex
-	TMap<FString, TArray<bool>> Codex; //Uses ID numbers to keep the list organized
 	//Turn Codex into a class to make it have its own functionality
+	TArray<FString> KnownRecipes;
+	TMap<FString, TArray<bool>> OpenedChests; //name of location and then id number based on chests in that location
+	TMap<FString, TArray<int>> ProgressTracker; //Story and Quest Progress Tracker
+	//TMap<FString, TArray<int>> Codex; //Uses ID numbers to keep the list organized
 
 protected:
 
