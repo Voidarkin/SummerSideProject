@@ -42,6 +42,6 @@ public:
 	UFUNCTION()
 		EEffect GetEffect() { return Effect; }
 	UFUNCTION()
-		int GetValue() { return Value; }
+		uint16 GetValue() { return Value; }
 
 };

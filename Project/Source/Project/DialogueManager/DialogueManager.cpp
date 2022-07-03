@@ -8,6 +8,7 @@
 #include "../States/ProjectPlayerState.h"
 #include "Kismet/GameplayStatics.h"
 #include "../PlayerController/MyPlayerController.h"
+#include "../Interactables/TalkingActor.h"
 
 UDialogueManager::UDialogueManager()
 {
@@ -55,15 +56,23 @@ void UDialogueManager::StoreConversation(UConversation* conversation)
 	UpdateDialogue();
 }
 
-void UDialogueManager::StoreConversation(TArray<UConversation*> conversation, char startingConversation)
+void UDialogueManager::StoreConversation(TArray<UConversation*> conversation, uint8 startingConversation)
 {
-	EmptyStoredConversations();
-	for (int i = 0; i < conversation.Num(); i++)
+	if (StoredConversations == conversation)
 	{
-		StoredConversations[i] = conversation[i];
+		CurrentConversationProgress = 0;
+		UpdateDialogue();
 	}
-	CurrentConversation = startingConversation;
-	UpdateDialogue();
+	else
+	{
+		EmptyStoredConversations();
+		for (int i = 0; i < conversation.Num(); i++)
+		{
+			StoredConversations.Add(conversation[i]);
+		}
+		CurrentConversation = startingConversation;
+		UpdateDialogue();
+	}
 }
 
 void UDialogueManager::UpdateDialogue()
@@ -80,12 +89,19 @@ void UDialogueManager::ContinueConversation()
 		EndConversation();
 		return;
 	}
-	if (!(CurrentConversationProgress <= StoredConversations[CurrentConversation]->Num()))
+	if (CurrentConversationProgress >= StoredConversations[CurrentConversation]->Num())
 	{
+		if (!StoredConversations[CurrentConversation]->bNextConversationStarts)
+		{
+			EndConversation();
+			return;
+		}
 		//check if current conversation was a choice and if it continues
 		
 		//end dialogue
-		EndConversation();
+		CurrentConversation = StoredConversations[CurrentConversation]->NextConversation;
+
+		CurrentConversationProgress = 0;
 
 	}
 	else

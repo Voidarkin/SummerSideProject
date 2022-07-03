@@ -54,7 +54,7 @@ public:
 	void AddPartyMember(UCharacterData* character);
 	void RemovePartyMember(FString characterName);
 	void RemovePartyMember(UCharacterData* character);
-	int GetCurrentPartyNum() { return CurrentPartySize; }
+	uint8 GetCurrentPartyNum() { return CurrentPartySize; }
 
 protected:
 
@@ -77,14 +77,15 @@ protected:
 	UPROPERTY()
 		TArray<UCharacterData*> PartyMembers;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0", ClampMax = "3"))
-		int CurrentPartySize;
+		uint8 CurrentPartySize;
 
 	//Codex
 	//Turn Codex into a class to make it have its own functionality
 	TArray<FString> KnownRecipes;
 	TMap<FString, TArray<bool>> OpenedChests; //name of location and then id number based on chests in that location
-	TMap<FString, TArray<int>> ProgressTracker; //Story and Quest Progress Tracker
-	//TMap<FString, TArray<int>> Codex; //Uses ID numbers to keep the list organized
+	TMap<FString, uint8> ConversationTracker; //Keeps track of conversations for each NPC
+	TMap<FString, uint8> ProgressTracker; //Story and Quest Progress Tracker
+	TMap<FString, TArray<uint8>> Codex; //Uses ID numbers to keep the list organized
 
 protected:
 

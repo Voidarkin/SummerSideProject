@@ -22,13 +22,13 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FString Text = "";
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int ConversationAfterChoice = 0;
+		uint8 ConversationAfterChoice = 0;
 
 	//The choice may have story significance or quest significance
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FString ProgressName = "";
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int ProgressValue = 0;
+		uint8 ProgressValue = 0;
 
 };
 

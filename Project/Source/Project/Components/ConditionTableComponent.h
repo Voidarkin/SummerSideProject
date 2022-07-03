@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -19,13 +17,18 @@ Description: Stores the resistances of conditions
 USTRUCT(BlueprintType)
 struct FConditionInfo
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
-		UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+public:
+
+	FConditionInfo() {}
+	FConditionInfo(FString newName, int newValue = 0) : name(newName), value(newValue) {}
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FString name = "";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "-100", ClampMax = "100"))
-		int32 value = 0;
+		int value = 0;
 
 };
 
@@ -41,9 +44,7 @@ public:
 	virtual const FString GetType() override { return GetStaticType(); }
 
 public:
-	// Sets default values for this component's properties
 	UConditionTableComponent();
-
 
 protected:
 

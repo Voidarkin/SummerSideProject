@@ -37,7 +37,7 @@ protected:
 		FString Description;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "1", ClampMax = "99"))
-		int Level;
+		uint8 Level;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "0"))
 		int EXP;
@@ -79,7 +79,7 @@ public:
 		FString GetCharacterDescription() { return Description; }
 
 	UFUNCTION()
-		int GetLevel() { return Level; }
+		uint8 GetLevel() { return Level; }
 
 	UFUNCTION()
 		int GetExperience() { return EXP; }

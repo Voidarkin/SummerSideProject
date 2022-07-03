@@ -14,6 +14,7 @@ Description: Controls all dialogue systems in the game
 class UDialogueScreen;
 class UDialogueType;
 class UConversation;
+class ATalkingActor;
 
 UCLASS()
 class PROJECT_API UDialogueManager : public UGameInstanceSubsystem
@@ -30,7 +31,7 @@ public:
 	void HideDialogue();
 	void StoreConversation(UDialogueType* message);
 	void StoreConversation(UConversation* conversation);
-	void StoreConversation(TArray<UConversation*> conversation, char startingConversation = 0);
+	void StoreConversation(TArray<UConversation*> conversation, uint8 startingConversation = 0);
 	void UpdateDialogue();
 	void ContinueConversation();
 	void EndConversation();
@@ -47,8 +48,8 @@ protected:
 	UPROPERTY()
 		TArray<UConversation*> StoredConversations;
 
-	int CurrentConversation = 0;
-	int CurrentConversationProgress = 0;
+	uint8 CurrentConversation = 0;
+	uint16 CurrentConversationProgress = 0;
 
 protected:
 

@@ -6,10 +6,18 @@
 #include "../DialogueManager/DialogueTypes/Choice.h"
 #include "../DialogueManager/DialogueTypes/Dialogue.h"
 #include "../DialogueManager/DialogueTypes/Descriptor.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 ATalkingActor::ATalkingActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("OverlapComp"));
+	RootComponent = CapsuleComponent;
+
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+	MeshComponent->SetupAttachment(RootComponent);
 
 	CurrentConversation = 0;
 }

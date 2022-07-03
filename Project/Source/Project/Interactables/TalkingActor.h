@@ -29,11 +29,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(EditInstanceOnly, Instanced, Category = "Conversation")
-		TArray<UConversation*> Conversations;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class UCapsuleComponent* CapsuleComponent;
 
 	UPROPERTY(EditInstanceOnly, Category = "Conversation")
-		int CurrentConversation;
+		FString ProgressName;
+	UPROPERTY(EditInstanceOnly, Instanced, BlueprintReadWrite, Category = "Conversation")
+		TArray<UConversation*> Conversations;
+	UPROPERTY(EditInstanceOnly, Category = "Conversation")
+		uint8 CurrentConversation;
 
 protected:
 	

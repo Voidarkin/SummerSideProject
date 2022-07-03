@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -19,13 +17,18 @@ Description: Stores the data to determine damage resistances or damage from dama
 USTRUCT(BlueprintType)
 struct FType
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
+
+public:
+
+	FType() {}
+	FType(FString newName, int newValue = 0, bool absorb = false) : name(newName), value(newValue), bAbsorb(absorb) {}
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FString name = "";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = "-100", ClampMax = "100"))
-		int32 value = 0;
+		int value = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bAbsorb = false;

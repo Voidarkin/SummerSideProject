@@ -27,7 +27,7 @@ public:
 	AChest();
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "ID")
-		int ChestID;
+		uint8 ChestID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UStaticMeshComponent* MeshComponent;
@@ -48,7 +48,7 @@ public:
 		FString ItemName;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
-		int ItemAmount;
+		uint8 ItemAmount;
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite)
 		bool bOpened;
