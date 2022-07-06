@@ -30,6 +30,22 @@ enum class ETargetShape : uint8
 };
 
 UENUM(BlueprintType)
+enum class EState : uint8
+{
+    Default     UMETA(DisplayName = "Default"),
+    Dialogue    UMETA(DisplayName = "Dialogue"),
+    Menu		UMETA(DisplayName = "Menu"),
+};
+
+UENUM(BlueprintType)
+enum class EInteractType : uint8
+{
+    Open UMETA(DisplayName = "Open"),
+    Talk UMETA(DisplayName = "Talk"),
+    Interact UMETA(DisplayName = "Interact")
+};
+
+UENUM(BlueprintType)
 enum class EDamageType : uint8
 {
     Physical UMETA(DisplayName = "Physical"),

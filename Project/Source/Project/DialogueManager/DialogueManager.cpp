@@ -46,6 +46,7 @@ void UDialogueManager::StoreConversation(UDialogueType* message)
 	EmptyStoredConversations();
 	message->Display(DialogueUI);
 	DisplayDialogue();
+	ChangePlayerState(EState::Dialogue);
 }
 
 void UDialogueManager::StoreConversation(UConversation* conversation)
@@ -54,6 +55,7 @@ void UDialogueManager::StoreConversation(UConversation* conversation)
 	StoredConversations[0] = conversation;
 
 	UpdateDialogue();
+	ChangePlayerState(EState::Dialogue);
 }
 
 void UDialogueManager::StoreConversation(TArray<UConversation*> conversation, uint8 startingConversation)
@@ -73,6 +75,7 @@ void UDialogueManager::StoreConversation(TArray<UConversation*> conversation, ui
 		CurrentConversation = startingConversation;
 		UpdateDialogue();
 	}
+	ChangePlayerState(EState::Dialogue);
 }
 
 void UDialogueManager::UpdateDialogue()
@@ -115,8 +118,13 @@ void UDialogueManager::ContinueConversation()
 void UDialogueManager::EndConversation()
 {
 	HideDialogue();
+	ChangePlayerState(EState::Default);
+}
+
+void UDialogueManager::ChangePlayerState(EState state)
+{
 	AMyPlayerController* PlayerController = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	PlayerController->GetPlayerState<AProjectPlayerState>()->ChangeState(EState::Default);
+	PlayerController->GetPlayerState<AProjectPlayerState>()->ChangeState(state);
 }
 
 void UDialogueManager::EmptyStoredConversations()

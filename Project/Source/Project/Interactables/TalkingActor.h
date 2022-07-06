@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "InteractableBase.h"
 #include "Interactable.h"
 
 #include "TalkingActor.generated.h"
@@ -16,7 +16,7 @@ Description: An interactable to talk to
 class UConversation;
 
 UCLASS()
-class PROJECT_API ATalkingActor : public AActor, public IInteractable
+class PROJECT_API ATalkingActor : public AInteractableBase
 {
 	GENERATED_BODY()
 	

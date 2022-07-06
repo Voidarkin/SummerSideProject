@@ -9,7 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 
-ATalkingActor::ATalkingActor()
+ATalkingActor::ATalkingActor() : Super()
 {
 	PrimaryActorTick.bCanEverTick = true;
 

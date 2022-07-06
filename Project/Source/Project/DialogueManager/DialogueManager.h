@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "../Enums.h"
 #include "DialogueManager.generated.h"
 
 /***************************************************************************************
@@ -35,6 +36,7 @@ public:
 	void UpdateDialogue();
 	void ContinueConversation();
 	void EndConversation();
+	void ChangePlayerState(EState state);
 
 protected:
 

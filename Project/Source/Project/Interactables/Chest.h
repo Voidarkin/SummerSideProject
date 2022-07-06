@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "InteractableBase.h"
 #include "Interactable.h"
 
 #include "Chest.generated.h"
@@ -19,7 +19,7 @@ class UInventory;
 class UDescriptor;
 
 UCLASS()
-class PROJECT_API AChest : public AActor, public IInteractable
+class PROJECT_API AChest : public AInteractableBase
 {
 	GENERATED_BODY()
 	
@@ -59,6 +59,7 @@ protected:
 public:	
 
 	void CheckIfOpened();
+	virtual bool CanBeInteractedWith() override;
 
 	virtual void Interact_Implementation() override;
 

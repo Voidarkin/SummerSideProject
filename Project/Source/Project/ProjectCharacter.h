@@ -50,14 +50,16 @@ public:
 	UFUNCTION()
 		void Interact(); //TODO: change this to a function pointer down the road
 
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 
-	
+	UPROPERTY()
+		class AInteractableBase* StoredInteractable = nullptr;
 
 protected:
 	
-
+	void EmptyStoredInteractable();
 
 public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

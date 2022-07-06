@@ -10,7 +10,7 @@
 #include "../DialogueManager/DialogueTypes/DialogueType.h"
 #include "../DialogueManager/DialogueTypes/Descriptor.h"
 
-AChest::AChest()
+AChest::AChest() : Super()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -100,4 +100,9 @@ void AChest::Interact_Implementation()
 
 	}
 	
+}
+
+bool AChest::CanBeInteractedWith()
+{
+	return !bOpened;
 }

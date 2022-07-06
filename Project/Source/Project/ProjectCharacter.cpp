@@ -10,6 +10,8 @@
 #include "Interactables/Interactable.h"
 #include "DialogueManager/DialogueManager.h"
 #include "States/ProjectPlayerState.h"
+#include "DrawDebugHelpers.h"
+#include "Interactables/InteractableBase.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AProjectCharacter
@@ -54,6 +56,76 @@ AProjectCharacter::AProjectCharacter()
 
 }
 
+void AProjectCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+
+	//Check if Interactable is in front
+	FVector Start = GetActorLocation();
+	FVector End = Start + (FRotationMatrix(GetActorRotation()).GetScaledAxis(EAxis::X) * 200.0f);
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	FHitResult HitResult;
+	
+	if (!GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, FCollisionObjectQueryParams(), QueryParams)) 
+	{ 
+		EmptyStoredInteractable();
+		return;
+	}
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5, 0, 3.f);
+	
+	AActor* Actor = HitResult.GetActor();
+	if (!Actor) 
+	{ 
+		EmptyStoredInteractable();
+		return; 
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Hit - Something");
+
+	if (!Actor->Implements<UInteractable>()) 
+	{ 
+		EmptyStoredInteractable();
+		return;	
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Hit Object Has Interactable");
+	
+	//Make UI appear over Interactable
+	AInteractableBase* newInteractable = Cast<AInteractableBase>(Actor);
+	if (StoredInteractable == newInteractable)
+	{
+		if (StoredInteractable->CanBeInteractedWith())
+		{
+			StoredInteractable->UpdateUILocation();
+		}
+		else
+		{
+			StoredInteractable->TurnOffUI();
+		}
+	}
+	else
+	{
+		if (StoredInteractable)
+		{
+			StoredInteractable->TurnOffUI();
+		}
+		StoredInteractable = newInteractable;
+		if (StoredInteractable->CanBeInteractedWith())
+		{
+			StoredInteractable->TurnOnUI();
+		}
+	}
+}
+
+void AProjectCharacter::EmptyStoredInteractable()
+{
+	if (StoredInteractable)
+	{
+		StoredInteractable->TurnOffUI();
+		StoredInteractable = nullptr;
+	}
+}
 
 void AProjectCharacter::OnResetVR()
 {
@@ -79,6 +151,7 @@ void AProjectCharacter::TouchStopped(ETouchIndex::Type FingerIndex, FVector Loca
 void AProjectCharacter::Interact_Default()
 {
 	//Sphere Collision method getting closest interactable
+	/*
 	//Gather actors within interact range
 	TArray<AActor*> FoundActors;
 	InteractSphere->GetOverlappingActors(FoundActors, AActor::StaticClass());
@@ -97,9 +170,29 @@ void AProjectCharacter::Interact_Default()
 
 	//find closest interactable from new list and execute
 
-
 	IInteractable::Execute_Interact(interactables[0]);
 	Cast<AProjectPlayerState>(GetPlayerState())->ChangeState(EState::Dialogue);
+	*/
+
+	//Raycast Collision Method
+	FVector Start = GetActorLocation();
+	//FVector End = Start + (FRotationMatrix(GetControlRotation()).GetScaledAxis(EAxis::X) * 200.0f);
+	FVector End = Start + (FRotationMatrix(GetActorRotation()).GetScaledAxis(EAxis::X) * 200.0f);
+
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this);
+	FHitResult HitResult;
+	if (!GetWorld()->LineTraceSingleByObjectType(HitResult, Start, End, FCollisionObjectQueryParams(), QueryParams)) { return; }
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 5, 0, 3.f);
+
+	AActor* Actor = HitResult.GetActor();
+	if (!Actor) { return; }
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Hit - Something");
+
+	if (!Actor->Implements<UInteractable>()) { return; }
+	GEngine->AddOnScreenDebugMessage(-1, 3, FColor::Red, "Hit Object Has Interactable");
+
+	IInteractable::Execute_Interact(Actor);
 }
 
 void AProjectCharacter::Interact_Dialogue()
@@ -165,3 +258,5 @@ void AProjectCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+
+
