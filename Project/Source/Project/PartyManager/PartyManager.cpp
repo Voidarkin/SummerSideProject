@@ -7,6 +7,7 @@
 #include "../MapTransitionTrigger.h"
 #include "../ProjectCharacter.h"
 #include "../UI/LoadingScreen.h"
+#include "../UI/InventoryUI.h"
 #include "../PlayerController/MyPlayerController.h"
 #include "EngineUtils.h"
 #include "GameFramework/Actor.h"
@@ -32,6 +33,33 @@ UPartyManager::UPartyManager()
 	//Starting Recipes
 	KnownRecipes.Add("Potion");
 
+	static ConstructorHelpers::FClassFinder<UInventoryUI> InventoryUI_BP_Class(TEXT("/Game/ThirdPersonCPP/Blueprints/UI/WBP_Inventory"));
+	if (InventoryUI_BP_Class.Class != NULL)
+	{
+		InventoryUI_BP = InventoryUI_BP_Class.Class;
+		UGameInstance* GameInstance = GetGameInstance();
+		if (GameInstance)
+		{
+			InventoryUI = CreateWidget<UInventoryUI>(GameInstance, InventoryUI_BP);
+		}
+
+	}
+
+}
+
+void UPartyManager::ToggleInventory()
+{
+	InventoryUI->SetInventorySlots();
+	if (InventoryUI->IsInViewport())
+	{
+		InventoryUI->RemoveFromViewport();
+		Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->SetInputModeUI(EGameInputMode::GameOnly);
+	}
+	else
+	{
+		InventoryUI->AddToViewport();
+		Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0))->SetInputModeUI(EGameInputMode::GameAndUI);
+	}
 }
 
 void UPartyManager::MapTransition(FString currentMap, FString nextMap)

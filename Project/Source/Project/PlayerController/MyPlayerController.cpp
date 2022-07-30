@@ -8,6 +8,7 @@
 //#include "UI/MenuWidget.h"
 #include "../UI/LoadingScreen.h"
 #include "../DialogueManager/DialogueManager.h"
+#include "../PartyManager/PartyManager.h"
 //#include "Interactables/PDInteractable.h"
 
 
@@ -64,7 +65,7 @@ void AMyPlayerController::SetupInputComponent()
 		//InputComponent->BindAction("Speed", IE_Released, this, &APDPlayerController::SpeedUp);
 
 		InputComponent->BindAction("Interact", IE_Pressed, this, &AMyPlayerController::Interact);
-		//InputComponent->BindAction("Menu", IE_Pressed, this, &APDPlayerController::ToggleMenu);
+		InputComponent->BindAction("Menu", IE_Pressed, this, &AMyPlayerController::ToggleInventory);
 
 		InputComponent->BindAxis("Turn", MyPawn, &AProjectCharacter::AddControllerYawInput);
 		InputComponent->BindAxis("TurnRate", this, &AMyPlayerController::TurnAtRate);
@@ -155,6 +156,12 @@ void AMyPlayerController::Interact()
 		MyPawn->Interact();
 }
 
+void AMyPlayerController::ToggleInventory()
+{
+	UPartyManager* PartyManager = GetGameInstance()->GetSubsystem<UPartyManager>();
+	PartyManager->ToggleInventory();
+}
+
 void AMyPlayerController::EnableLoadingScreen()
 {
 	if (!LoadingScreenWidget) { return; }
@@ -165,4 +172,33 @@ void AMyPlayerController::DisableLoadingScreen()
 {
 	if (!LoadingScreenWidget) { return; }
 	LoadingScreenWidget->RemoveFromViewport();
+}
+
+void AMyPlayerController::SetInputModeUI(EGameInputMode InputMode)
+{
+
+	switch (InputMode)
+	{
+	case EGameInputMode::UIOnly:
+	{
+		SetInputMode(FInputModeUIOnly());
+		SetShowMouseCursor(true);
+		break;
+	}
+	case EGameInputMode::GameAndUI:
+	{
+		SetInputMode(FInputModeGameAndUI());
+		SetShowMouseCursor(true);
+		break;
+	}
+	case EGameInputMode::GameOnly:
+	{
+		SetInputMode(FInputModeGameOnly());
+		SetShowMouseCursor(false);
+		break;
+	}
+	default:
+		break;
+	}
+
 }

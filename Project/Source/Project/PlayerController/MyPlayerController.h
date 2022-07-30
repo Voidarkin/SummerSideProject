@@ -8,6 +8,16 @@
 
 class ULoadingScreen;
 
+
+UENUM(BlueprintType)
+enum class EGameInputMode : uint8
+{
+	UIOnly = 0 UMETA(DisplayName = "UI Only"),
+	GameAndUI = 1  UMETA(DisplayName = "Game And UI"),
+	GameOnly = 2     UMETA(DisplayName = "Game Only"),
+	Count
+};
+
 UCLASS()
 class PROJECT_API AMyPlayerController : public APlayerController
 {
@@ -41,6 +51,7 @@ protected:
 	void SlowDown();
 
 	void Interact();
+	void ToggleInventory();
 
 
 	//void AddControllerYawInput(float Val);
@@ -55,5 +66,7 @@ public:
 
 	void EnableLoadingScreen();
 	void DisableLoadingScreen();
+
+	void SetInputModeUI(EGameInputMode InputMode);
 
 };

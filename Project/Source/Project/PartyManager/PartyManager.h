@@ -17,6 +17,7 @@ is constantly monitored.
 class ULoadingScreen;
 class UInventory;
 class UCharacterData;
+class UInventoryUI;
 
 UCLASS()
 class PROJECT_API UPartyManager : public UGameInstanceSubsystem
@@ -28,7 +29,16 @@ public:
 
 	UPartyManager();
 
+	//Inventory UI
+	UPROPERTY()
+		UInventoryUI* InventoryUI;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<UInventoryUI> InventoryUI_BP;
+
 public:
+
+	//Inventory UI
+	void ToggleInventory();
 
 	//Map Transition
 	void MapTransition(FString currentMap, FString nextMap);
